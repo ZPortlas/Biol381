@@ -1,0 +1,8 @@
+---
+title: "Homework 1"
+author: "Zoe Portlas"
+date: "August 29, 2018"
+output: html_document
+---
+
+The first one
