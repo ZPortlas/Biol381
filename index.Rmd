@@ -1,15 +1,19 @@
 ---
-title: "Biol381 HW"
+title: "Biol381 Homework"
 author: "Zoe Portlas"
-date: "August 29, 2018"
-output: html_document
+output:
+  prettydoc::html_pretty:
+    theme: Cayman
+    highlight: github
 ---
 
 
-# My Homework
-
-### Hw1
+# Computational Biology Homework
 
 * [Homework 1](homework1.html)
 
-* second item
+* Homework 2
+
+* Homework 3
+
+* Homework 4
