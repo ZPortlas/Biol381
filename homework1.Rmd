@@ -8,4 +8,8 @@ output:
     highlight: github
 ---
 
-The first one
+* I created a webpage for my Bio381 homework.
+
+* I added a theme to the webpage.
+
+* I added a License and a ReadMe file to my Repository. 
