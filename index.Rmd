@@ -14,6 +14,14 @@ output:
 
 * [Homework 2](homework2.html)
 
-* Homework 3
+* [Homework 3](BeamerHW.pdf)
 
 * Homework 4
+
+* Homework 5
+
+* Homework 6
+
+* Homework 7
+
+* Homework 8

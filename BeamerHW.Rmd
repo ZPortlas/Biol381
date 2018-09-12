@@ -1,0 +1,60 @@
+---
+title: "My Biol 381 Beamer Presentation"
+author: "Zoe Portlas"
+date: "September 12, 2018"
+output: 
+  beamer_presentation: 
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: JuanLesPins
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Centaurea jacea and Centaurea nigra
+
+> - Both native to Europe
+> - Invasive in North America
+> - Hybridize to form C. x Moncktonii
+
+## Back-crossing
+
+ \begin{picture}(320,250)
+ \put(0,60){\includegraphics[height=6cm]{CentZoom.png}}
+ \put(230,200){\begin{minipage}[t]{0.3\linewidth}
+ {Centaurea jacea, Centaurea nigra, and Centaurea x moncktonii can all cross with each other, and this happens in invasive populations in North America.}
+ \end{minipage}}
+ \end{picture}
+
+## Morphology
+
+\begin{picture}(320,250)
+ \put(0,160){\includegraphics[height=3cm]{Cjacea.jpg}}
+ \put(175,120){\includegraphics[height=3cm]{Cnigra.jpg}}
+ \put(50,50){\includegraphics[height=3cm]{Cmonck.jpg}}
+ \put(15,150){\begin{minipage}[t]{1\linewidth}
+ {Centaurea jacea}
+ \end{minipage}}
+ \put(195,110){\begin{minipage}[t]{1\linewidth}
+ {Centaurea nigra}
+ \end{minipage}}
+ \put(40,40){\begin{minipage}[t]{1\linewidth}
+ {Centaurea x moncktonii}
+ \end{minipage}}
+ \end{picture}
+
+## Morphology
+
+> - From the images of the different members of the family (if they were identified correctly), we can see that morphology is very similar.
+
+\bigskip
+
+> - \color{red} Morphology isn't a good way to identify!
+
+## Questions
+
+- When did North American populations hybridize? Before or after invasion? Both?
+- How are populations in North America different than populations in Europe?
+- Are there novel combinations of alleles in North America that don't exist in the native range?
