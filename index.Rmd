@@ -20,7 +20,7 @@ output:
 
 * [Homework 5](dplyrHW.html)
 
-* Homework 6
+* [Homework 6](homework6.html)
 
 * Homework 7
 
