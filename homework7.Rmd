@@ -1,0 +1,137 @@
+---
+title: "Homework 7"
+author: "Zoe Portlas"
+date: "October 10, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+```
+
+## Hypothesis
+
+Centaurea jacea, C. nigra, and C. x moncktonii are all part of the hybrid complex. I hypothesize that if the capitulum of C. jacea is wider than the capitulum of C. nigra, that their hybrid, C. x monktonii, will be intermediate between them.
+
+## The Data
+
+There are 3 groups: jacea, nigra, and monck. The measurement of interest is the width of the capitulum (cm).
+
+I want to have a large number of samples for each group because the experiment design would probably include sampling different populations in New England and each population would have 10 samples. For this reason, I'm going to have 1000 samples. According to previous work, the hybrid has overtaken its parent species in the Pacific Northwest, but not in New England. Because of those observations, I'm going to divide the 1000 samples fairly evenly between the groups.
+
+The reported range of widths for C. jacea is 3 - 4.5 cm and the reported range of widths for C. nigra is 2 - 3 cm. Here, jacea will have the mean 3.75 cm and nigra will have the mean 2.5 cm. My hypothesis is that monck is intermediate, it will have a mean of 3.1 cm. I'm going to assume for the standard deviation that most samples will be within 0.6 - 0.75 cm of the mean because then they would still be similar to the ranges I found for the parent species.
+
+#### Making the data
+
+```{r}
+nGroups <- 3
+nName <- c("jacea", "nigra", "monck")
+nSize <- c(325,325,350) 
+nMean <- c(3.75, 2.5, 3.1)
+nSD <- c(0.75,0.65,0.7)
+```
+
+#### Organizing the data into a data frame
+
+```{r}
+ID <- 1:sum(nSize)
+
+width <- c(rnorm(n = nSize[1], mean = nMean[1], sd = nSD[1]),
+            rnorm(n = nSize[2], mean = nMean[2], sd = nSD[2]),
+            rnorm(n = nSize[3], mean = nMean[3], sd = nSD[3]))
+TGroup <- rep(nName, nSize)
+table(TGroup)
+ANOdata <- data.frame(ID, TGroup, width)
+str(ANOdata)
+head(ANOdata)
+```
+
+#### Running an ANOVA
+
+```{r}
+ANOmodel <- aov(width ~ TGroup, data = ANOdata)
+print(ANOmodel)
+print(summary(ANOmodel))
+```
+
+#### Plotting the ANOVA with ggplot
+
+```{r}
+ANOPlot <- ggplot(data = ANOdata,
+                  aes(x = TGroup, y = width,
+                      fill = TGroup)) +
+            geom_boxplot()
+print(ANOPlot)
+```
+
+### Adjusting the mean of the groups
+
+What if the means are closer but nothing else changes?
+
+```{r}
+nGroups <- 3
+nName <- c("jacea", "nigra", "monck")
+nSize <- c(5,5,5) 
+nMean <- c(3.75, 2.5, 3.1)
+nSD <- c(0.75,0.65,0.7)
+
+ID <- 1:sum(nSize)
+
+width <- c(rnorm(n = nSize[1], mean = nMean[1], sd = nSD[1]),
+            rnorm(n = nSize[2], mean = nMean[2], sd = nSD[2]),
+            rnorm(n = nSize[3], mean = nMean[3], sd = nSD[3]))
+TGroup <- rep(nName, nSize)
+table(TGroup)
+ANOdata <- data.frame(ID, TGroup, width)
+str(ANOdata)
+head(ANOdata)
+
+ANOmodel <- aov(width ~ TGroup, data = ANOdata)
+print(ANOmodel)
+print(summary(ANOmodel))
+
+ANOPlot <- ggplot(data = ANOdata,
+                  aes(x = TGroup, y = width,
+                      fill = TGroup)) +
+            geom_boxplot()
+print(ANOPlot)
+```
+
+### Adjusting the sample sizes of the groups
+
+What if I make the sample sizes a lot smaller? Will it still be significant? How big of a sample size is still significant?
+
+Still (usually) significant at only 5 plants per group!
+
+```{r}
+nGroups <- 3
+nName <- c("jacea", "nigra", "monck")
+nSize <- c(48,48,48) 
+nMean <- c(3.2, 2.9, 3.0)
+nSD <- c(0.75,0.65,0.7)
+
+ID <- 1:sum(nSize)
+
+width <- c(rnorm(n = nSize[1], mean = nMean[1], sd = nSD[1]),
+            rnorm(n = nSize[2], mean = nMean[2], sd = nSD[2]),
+            rnorm(n = nSize[3], mean = nMean[3], sd = nSD[3]))
+TGroup <- rep(nName, nSize)
+table(TGroup)
+ANOdata <- data.frame(ID, TGroup, width)
+str(ANOdata)
+head(ANOdata)
+
+ANOmodel <- aov(width ~ TGroup, data = ANOdata)
+print(ANOmodel)
+print(summary(ANOmodel))
+
+ANOPlot <- ggplot(data = ANOdata,
+                  aes(x = TGroup, y = width,
+                      fill = TGroup)) +
+            geom_boxplot()
+print(ANOPlot)
+```

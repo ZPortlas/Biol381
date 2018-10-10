@@ -22,6 +22,14 @@ output:
 
 * [Homework 6](homework6.html)
 
-* Homework 7
+* [Homework 7](homework7.html)
 
 * Homework 8
+
+* Homework 9
+
+* Homework 10
+
+* Homework 11
+
+* Homework 12
