@@ -1,0 +1,94 @@
+---
+title: "Homework 8"
+author: "Zoe Portlas"
+date: "October 17, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Creating Functions with Defaults
+
+```{r}
+#########################
+# FUNCTION: Make data frame
+# INPUTS: parameters to generate random data set with 3 factors. You can change group names, sample size of each group, mean of each group, and standard deviation of each group, but not the number of groups.
+# OUTPUTS: data frame
+#-------------------------
+
+makeData <- function(nName = c("jacea", "nigra", "monck"), nSize = c(325,325,350) , nMean = c(3.75, 2.5, 3.1), nSD = c(0.75,0.65,0.7)){
+  ID <- 1:sum(nSize)
+  
+  width <- c(rnorm(n = nSize[1], mean = nMean[1], sd = nSD[1]),
+            rnorm(n = nSize[2], mean = nMean[2], sd = nSD[2]),
+            rnorm(n = nSize[3], mean = nMean[3], sd = nSD[3]))
+  TGroup <- rep(nName, nSize)
+  table(TGroup)
+  myData <- data.frame(ID, TGroup, width)
+  
+  return(myData)
+}
+#-------------------------
+myData <- makeData()
+#-------------------------
+
+#########################
+# FUNCTION: myANOVA
+# INPUTS: a data frame plus columns from the data frame that you want for x and y
+# OUTPUTS: an ANOVA summary
+#-------------------------
+ myANOVA <- function(data = myData, x = myData$TGroup, y = myData$width){
+  myModel <- aov(y ~ x, data = data)
+   return(summary(myModel))
+ }
+#-------------------------
+aovModel <- myANOVA(makeData())
+aovModel
+
+
+#########################
+# FUNCTION: Plot ANOVA
+# INPUTS: data frame and the column names for your x and y variables
+# OUTPUTS: side effect barplot
+#-------------------------
+
+myPlot <- function(data = myData, x = myData$TGroup, y = myData$width) {
+  library(ggplot2)
+  ANOPlot <- ggplot(data = data,
+                    aes(x = x, y = y,
+                    fill = x)) +
+             geom_boxplot() +
+             labs(fill = "Groups",
+                  x = "Groups",
+                  y = "Trait")
+print(ANOPlot)
+}
+#-------------------------
+myPlot()
+```
+
+## 2. Changing One of My Functions
+I have changed `myPlot()`, which created a boxplot comparing the three groups, to `myHist()`, which creates a histogram of all of the groups' data.
+
+```{r}
+#########################
+# FUNCTION: myHist
+# INPUTS: data frame and the column names for your x variable
+# OUTPUTS: side effect histogram
+#-------------------------
+
+myHist <- function(data = myData, x = myData$width, xlab = "Width (mm)") {
+  library(ggplot2)
+  histPlot <- ggplot(data = data,
+                    aes(x = x)) +
+             geom_histogram() +
+             labs(x = xlab,
+                  y = "Count")
+print(histPlot)
+}
+#-------------------------
+
+myHist()
+```
