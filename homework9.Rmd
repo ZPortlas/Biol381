@@ -1,0 +1,168 @@
+---
+title: "Homework 9"
+author: "Zoe Portlas"
+date: "October 24, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Using a `for` or `while` loop, write a function to calculate the number of zeroes in a numeric vector.
+
+```{r}
+# myVec has 100 random integers from range 0-21
+myVec <- floor(runif(100, min=0, max=21))
+
+#make vector with nothing in it
+myCount <- vector("numeric", length = 0)
+myCount
+
+# make a loop that counts 0s
+for(i in seq_along(myVec)){
+  if(myVec[i] != 0) next
+  myCount <- c(myCount, myVec[i])
+}
+
+length(myCount)
+```
+
+2. Use subsetting instead of a loop to rewrite the function as a single line of code.
+
+```{r}
+# myVec has 100 random integers from range 0-21
+myVec <- floor(runif(100, min=0, max=21))
+
+length(myVec[myVec == 0])
+```
+
+3. Write a function that takes as input a numeric vector, and returns as output the maximum difference between all possible pairs of elements. Be careful to ensure that your function works properly with both negative and positive numbers. For your first version of the function, create a vector that stores all possible pairwise differences and then extracts the maximum value from that list.
+
+```{r}
+numVec <- runif(10, min = 0, max = 21)
+
+#########################
+# FUNCTION: maxDiff
+# INPUTS: numeric vector
+# OUTPUTS: maximum value of a vector of all possible pairwise differences
+#-------------------------
+maxDiff <- function(vec = 1:10) {
+  vec2 <- dist(vec)
+  return(max(vec2))
+}
+#------------------------
+
+maxDiff(numVec)
+```
+
+4. Now modify the output of (3) to yield a list with 3 elements. The first list item is the pair of vector values that are the maximum distance apart, the second list item is the pair of numbers representing the position of these elements in the vector, and the third list item is the maximum distance calculated from this pair.
+
+```{r}
+numVec <- runif(10, min = 0, max = 21)
+
+#########################
+# FUNCTION: maxDiff2
+# INPUTS: numeric vector
+# OUTPUTS: list of 3 items: pair of vector values that are max dist apart, position of these numbers, and the max distance
+#-------------------------
+maxDiff2 <- function(vec = 1:10) {
+  vec2 <- dist(vec)
+  m <- list(c(min(vec), max(vec)), c(which(vec == min(vec)), which(vec == max(vec))), max(vec2))
+  namesm <- c("Min and Max", "Positions Min and Max", "Max Dist")
+  names(m) <- namesm
+  return(m)
+}
+#------------------------
+
+maxDiff2(numVec)
+```
+
+5. For a second version of (3), store only a temp variable that keeps track of each difference and then retains only the largest difference as it cycles through the pairwise differences.
+
+```{r}
+numVec <- runif(10, min = 0, max = 21)
+
+#########################
+# FUNCTION: maxDiff3
+# INPUTS: numeric vector
+# OUTPUTS: maximum value of a vector of all possible pairwise differences
+#-------------------------
+maxDiff3 <- function(vec = 1:10) {
+  vec2 <- max(dist(vec))
+  return(vec2)
+}
+#------------------------
+
+maxDiff3(numVec)
+```
+
+6. Write a function that takes as input two matrices, and then multiplies them together, using the rules of matrix multiplication. Your function should return a warning if the input matrices are not of the correct dimensions for matrix multiplication. Check the performance of your function by comparing with the built in R function for matrix multiplication %*%.
+
+```{r}
+# two test matrices
+matrix1 <- matrix(1:8, nrow = 4, ncol = 4)
+matrix2 <- matrix(8:1, nrow = 4, ncol = 4)
+
+matrix1
+matrix2
+
+
+#########################
+# FUNCTION: matMultip
+# INPUTS: two matrices
+# OUTPUTS: one matrix that is the product of matrix1 x matrix2
+#-------------------------
+matMultip <- function(m1 = matrix(1:4, nrow = 2, ncol = 2),
+                      m2 = matrix(1:4, nrow = 2, ncol = 2)){
+  if(dim(m1) != dim(m2)){
+    stop("Function failure: matrices have different dimensions")
+  } else{
+  m3 <- m1 %*% m2
+  return(m3)}
+}
+#------------------------
+
+matMultip(m1 = matrix1, m2 = matrix2)
+
+# testing with matrix multiplication function %*%
+matrix1 %*% matrix2
+
+# testing error message
+badMatrix <- matrix(1:3, nrow = 3, ncol = 3)
+
+# matMultip(m1 = matrix1, m2 = badMatrix) 
+# It works but wouldn't knit
+```
+
+7. Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
+
+```{r}
+# m <- matrix(NA, nrow = 4, ncol = 4)
+# 
+# for(i in seq_along(nrow(m))){
+#   for(j in seq_along(ncol(m))){
+#     m[i,j] <- m[i,j]*m[j,i]
+#   }
+# }
+# m
+#########################
+# FUNCTION: productMat
+# INPUTS: two integers that represent the number of rows and columns in a matrix
+# OUTPUTS: matrix of those dimensions where each element is product of row number x and the column number
+# #-------------------------
+# productMat <- function(nrow = 4, ncol = 4){
+#   m <- matrix(NA, nrow = nrow, ncol = ncol)
+#   for(i in seq_along(nrow)){
+#   for(j in seq_along(ncol)){
+#     m[i,j] <- apply(i,ncol,prod)
+#   }
+# }
+#   return(m)
+# }
+# #------------------------
+# 
+# 
+# productMat()
+
+```
