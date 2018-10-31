@@ -28,7 +28,7 @@ output:
 
 * [Homework 9](homework9.html)
 
-* Homework 10
+* [Homework 10](homework10.html)
 
 * Homework 11
 

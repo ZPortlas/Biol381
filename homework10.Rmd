@@ -1,0 +1,169 @@
+---
+title: "Homework 10"
+author: "Zoe Portlas"
+date: "October 31, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Using a for loop, write a function to calculate the number of zeroes in a numeric vector. Before entering the loop, set up a counter variable counter <- 0. Inside the loop, add 1 to counter each time you have a zero in the matrix. Finally, use return(counter) for the output.
+
+```{r}
+# myVec is a vector of 100 numbers from 0 to 20, rounded down so they're all integers
+myVec <- floor(runif(100, min=0, max=21))
+
+# make vector with nothing in it
+myCount <- vector("numeric", length = 0)
+
+# make a loop that counts 0s
+for(i in seq_along(myVec)){
+  if(myVec[i] != 0) next
+  myCount <- c(myCount, myVec[i])
+}
+
+length(myCount)
+```
+
+2. Use subsetting instead of a loop to rewrite the function as a single line of code.
+
+```{r}
+# myVec has 100 random integers from range 0-21
+myVec <- floor(runif(100, min=0, max=21))
+
+length(myVec[myVec == 0])
+```
+
+3. Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
+
+```{r}
+numVec <- runif(10, min = 0, max = 21)
+
+#########################
+# FUNCTION: maxDiff
+# INPUTS: numeric vector
+# OUTPUTS: maximum value of a vector of all possible pairwise differences
+#-------------------------
+maxDiff <- function(vec = 1:10) {
+  vec2 <- dist(vec)
+  return(max(vec2))
+}
+#------------------------
+
+maxDiff(numVec)
+```
+
+4. Use the code from yesterday’s class to design and conduct a randomization test for some of your own data. You will need to modify the functions that read in the data, calculate the metric, and randomize the data. Once those are set up, the program should run correctly calling your new functions. Also, to make your analysis fully repeatable, make sure you set the random number seed at the beginning (use either set.seed() in base R, or char2seed in the TeachingDemos package
+
+```{r, include=FALSE}
+library(TeachingDemos)
+library(ggplot2)
+```
+
+```{r}
+char2seed("Geum")
+# function readData
+readData <- function(z = NULL){
+  if(is.null(z)){
+    xObs <- 1:1000
+    yObs <- xObs + 10*rnorm(1000)
+    dF <- data.frame(ID = seq_along(xObs),
+                     xObs,
+                     yObs)} else {
+  dF <- read.table(file = z, header = TRUE, sep = ",", stringsAsFactors = TRUE)}
+  return(dF)
+}
+
+# Calculate the metric
+getMetric <- function(z=NULL) {
+                if(is.null(z)){
+                  xObs <- 1:20
+                  yObs <-  xObs + 10*rnorm(20)
+                  z <- data.frame(ID=seq_along(xObs),xObs,yObs)} # set up data frame                 
+. <- lm(z[,3]~z[,2])
+. <- summary(.)
+. <- .$coefficients[2,1]
+
+slope <- .
+return(slope)
+}
+
+# create randomization
+shuffleData <- function(z = NULL){
+  if(is.null(z)){
+  xObs <- 1:20
+  yObs <- xObs + 10*rnorm(20)
+  z <- data.frame(ID = seq_along(xObs),xObs,yObs)}
+  z[,3] <- sample(z[,3])
+  return(z)
+}
+
+# calculate p value from simulated metrics
+getPVAL <- function(z = NULL){
+  if(is.null(z)){
+    z <- list(xObs = runif(1), xSim = runif(1000))}
+  pLower <- mean(z[[2]] <= z[[1]])
+  pUpper <- mean(z[[2]] >= z[[1]])
+  return(c(pLower,pUpper))
+}
+
+# function: plotRanTest
+# create ggplot of histogram of simulated values
+plotRanTest <- function(z=NULL) {
+  if(is.null(z)){
+    z <- list(rnorm(1),rnorm(1000)) }
+  dF <- data.frame(ID=seq_along(z[[2]]),simX=z[[2]])
+  p1 <- ggplot(data=dF,mapping=aes(x=simX))
+  p1 + geom_histogram(mapping=aes(fill=I("goldenrod"),color=I("black"))) +
+    geom_vline(aes(xintercept=z[[1]],col="blue")) 
+}
+
+# with randoms (char2seed = "geum")
+nSim <- 1000
+Xsim <- rep(NA, nSim)
+ran <- readData()
+head(ran)
+Xobs <-getMetric(ran)
+Xobs
+
+for(i in seq_len(nSim)){
+  Xsim[i] <- getMetric(shuffleData(ran))
+}
+
+slopes <- list(Xobs, Xsim)
+
+getPVAL(slopes)
+
+plotRanTest(slopes)
+
+# with geum
+nSim <- 1000
+Xsim <- rep(NA, nSim)
+geum <- readData(z = 'DispersalSmall2.csv')
+head(geum)
+Xobs <-getMetric(geum)
+Xobs
+
+for(i in seq_len(nSim)){
+  Xsim[i] <- getMetric(shuffleData(geum))
+}
+
+slopes <- list(Xobs, Xsim)
+
+getPVAL(slopes)
+
+plotRanTest(slopes)
+```
+
+5. For comparison, calculate in R the standard statistical analysis you would use with these data. How does the p-value compare for the standard test versus the p value you estimated from your randomization test? If the p values seem very different, run the program again with a different starting seed (and/or increase the number of replications in your randomization test). If there are persistent differences in the p value of the standard test versus your randomization, what do you think is responsible for this difference?
+
+```{r}
+head(geum)
+geumlm <- lm(geum$yObs~geum$xObs)
+
+summary(geumlm)
+
+## slope of 2.82 matches and p value of <2.2e-16 matches!
+```

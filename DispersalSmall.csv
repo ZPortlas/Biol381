@@ -1,4 +1,4 @@
-Seq,Year,Region,myVar,sqrtSeedWidth_mm,sqrtSeed_length_mm,sqrtDispersal_length_mm,sqrtDispersal_and_seed_mm,sqrtSeedShapeIndex,Weight_Tot,Weight_S,Weight_D
+Seq,Year,Region,sqrtSeedArea,sqrtSeedWidth_mm,sqrtSeed_length_mm,sqrtDispersal_length_mm,sqrtDispersal_and_seed_mm,sqrtSeedShapeIndex,Weight_Tot,Weight_S,Weight_D
 1,2002,Prairie,1.51195238,1.003493896,1.669131511,6.679146652,6.884547915,1.663320043,0.0091,0.0048,0.0043
 2,2002,Prairie,1.390323703,0.943927963,1.511290839,6.276463973,6.45585006,1.601065863,0.0091,0.0048,0.0043
 3,2002,Prairie,1.446029045,1.187434209,1.697056275,6.643643579,6.85696726,1.429179202,0.0091,0.0048,0.0043
