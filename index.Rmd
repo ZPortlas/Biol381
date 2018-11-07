@@ -30,6 +30,6 @@ output:
 
 * [Homework 10](homework10.html)
 
-* Homework 11
+* [Homework 11](homework11.html)
 
-* Homework 12
+* FactoMineR Presentation

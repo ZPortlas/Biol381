@@ -1,0 +1,101 @@
+---
+title: "Homework 11"
+author: "Zoe Portlas"
+date: "November 7, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include = F}
+# install.packages("devtools")
+# devtools::install_github("thomasp85/patchwork")
+# install.packages("colorspace", repos = "http://R-Forge.R-project.org")
+# devtools::install_github("wilkelab/cowplot")
+# devtools::install_github("clauswilke/colorblindr")library(patchwork)
+library(colorspace)
+library(cowplot)
+library(colorblindr)
+library(tidyverse)
+library(patchwork)
+library(ggthemes)
+```
+```{r, print=FALSE}
+head(airquality)
+airquality[,5]<-as.factor(airquality[,5])
+
+# Histograms
+
+# Ozone
+h1 <- ggplot(data = airquality,
+             mapping = aes(x = Ozone,
+                           color = I("black"),
+                           fill = I("steelblue"))) +
+  geom_histogram(binwidth = 5) +
+  theme_bw(base_size = 15) +
+  labs(y = "Count")
+h1 + labs(title = "Histogram of Ozone Data")
+
+# Temp
+h2 <- ggplot(data = airquality,
+             mapping = aes(x = Temp,
+                           color = I("black"),
+                           fill = I("steelblue"))) +
+  geom_histogram(binwidth = 1) +
+  theme_bw(base_size = 15) +
+  labs(y = "Count")
+h2 + labs(title = "Histogram of Temperature Data")
+
+# Ozone ~ Temp
+p2 <- ggplot(data = airquality,mapping = aes(x=Temp,y=Ozone, color = Month)) +
+  geom_point() + 
+  facet_grid(.~Month) +
+  geom_smooth(method = "lm") +
+  theme(legend.position = "none") +
+  labs(title = "Relationship of Ozone and Temperature by Month")
+p2
+
+# (Ozone + Temp) / Ozone ~ Temp
+(h1+h2)/p2
+
+# ggsave(filename = "OzoneTemp.pdf", plot = (h1+h2)/p2, device = "pdf",dpi = 600)
+```
+
+### [600 dpi PDF of my plot](OzoneTemp.pdf)
+
+```{r}
+states <- state.x77
+states <- as.data.frame(states)
+
+## Vermont is the blue line
+
+p1 <- ggplot(data=states,mapping=aes(x=Income)) +
+  geom_density(data=states,mapping=aes(x=Income)) +
+  geom_vline(aes(xintercept=states[45,2],col=I("blue"))) +
+  theme_fivethirtyeight(base_size = 10) +
+  labs(title = "Income")
+p1
+p2 <- ggplot(data=states,mapping=aes(x=Murder)) +
+  geom_density(data=states,mapping=aes(x=Murder)) +
+  geom_vline(aes(xintercept=states[45,5],col=I("blue"))) +
+  theme_fivethirtyeight(base_size = 10) +
+  labs(title = "Murder Rate")
+p2
+p3 <- ggplot(data=states,mapping=aes(x=Frost)) +
+  geom_density(data=states,mapping=aes(x=Frost)) +
+  geom_vline(aes(xintercept=states[45,7],col=I("blue"))) +
+  theme_fivethirtyeight(base_size = 10) +
+  labs(title = "Frost")
+p3
+p4 <- ggplot(data=states,mapping=aes(x=Area)) +
+  geom_density(data=states,mapping=aes(x=Area)) +
+  geom_vline(aes(xintercept=states[45,8],col=I("blue"))) +
+  theme_fivethirtyeight(base_size = 10) +
+  labs(title = "Area")
+p4
+
+p5 <- (p1+p2)/(p3+p4)
+p5
+```
