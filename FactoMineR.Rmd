@@ -1,0 +1,112 @@
+---
+title: "FactoMineR"
+author: "Zoe Portlas"
+date: "November 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### What are we using FactoMineR and factoextra for?
+
+* Performing Principal Components Analysis with FactoMineR
+
+* Visualizing it in a ggplot2 framwork with factoextra
+
+```{r}
+# install.packages("FactoMineR")
+# install.packages("factoextra")
+
+library(FactoMineR)
+library(ggplot2)
+library(factoextra)
+```
+
+#### What do we need to know about PCA?
+
+* Summarizes the information present in a multivariate data set by transforming the set of observations into a data set of synthetic, linearly uncorrelated variables called principal components (PCs).
+
+* Ranks the PCs in order of how much variation they explain, so the first PC explains the most of the variation, the second PC explains the second most amount of the variation, etc.
+
+* Reduces the dimensionality of a multivariate dataset while losing the least amount of information possible (ideally you only have to look at 2 or 3 of the PCs but still see most of the important information).
+
+#### A Simple Example
+
+##### PCA
+
+```{r}
+data("iris") # built in data set
+head(iris) # 4 continuous variables and 1 categorical variable
+
+# make a new dataset that only has the continuous variables
+# we will use the Species later
+iris2 <- iris[1:4]
+head(iris2)
+
+# PCA analysis to get PCs
+iris.pca <- PCA(iris2, scale.unit = TRUE, graph = FALSE)
+
+# look at eigenvalues (measure of how much variance is contained in a PC)
+# there are the same number of PCs as original variables
+iris.pca$eig
+```
+
+##### Scree plot
+
+```{r}
+# Scree plot with factoextra
+fviz_screeplot(iris.pca, ncp = 4) # ncp = number of PCs to show
+```
+
+##### Plots with individuals and contributions of variables
+
+```{r}
+# Simple PCA factor map with FactoMineR graphics
+plot.PCA(iris.pca, axes = c(1,2), choix = "var")
+# shows us the directions of the contributions of the original variables
+# variables pointing the same direction are correlated with each other
+
+# Biplot with factoextra
+# Biplot means it has individuals and contributions
+fviz_pca(iris.pca)
+
+# include only contributions of variables to clean it up
+fviz_pca_var(iris.pca, col.var = "contrib")
+
+# Control scale colors
+fviz_pca_var(iris.pca, col.var = "contrib") +
+  scale_color_gradient2(low = "blue", mid = "steelblue", high = "red", midpoint = 25.0) +
+  theme_void()
+
+# include only individuals with no labels
+fviz_pca_ind(iris.pca, label = "none")
+
+# use Species from iris to change habillage
+fviz_pca_ind(iris.pca, label="none", habillage = iris$Species)
+# changed color and shape
+
+# add ellipses
+fviz_pca_ind(iris.pca, label="none", habillage = iris$Species,
+             addEllipses = TRUE, ellipse.level = 0.95)
+```
+
+##### Biplot
+
+```{r}
+# Make a pretty biplot
+fviz_pca_biplot(iris.pca,
+                # individuals
+                geom.ind = "point",
+                fill.ind = iris$Species, col.ind = "black",
+                pointshape = 21, pointsize = 2,
+                addEllipses = TRUE,
+                # variables
+                col.var = "contrib",
+                gradient.cols = "RdYlBu",
+                legend.title = list(fill = "Species",
+                                    color = "Contrib",
+                                    alpha = "Contrib")) +
+  scale_color_gradient2(low = "blue", mid = "steelblue", high = "red", midpoint = 25.0)
+```

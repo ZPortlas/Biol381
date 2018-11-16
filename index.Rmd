@@ -32,4 +32,4 @@ output:
 
 * [Homework 11](homework11.html)
 
-* FactoMineR Presentation
+* [FactoMineR Presentation](FactoMineR.html)
