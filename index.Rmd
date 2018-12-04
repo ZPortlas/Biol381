@@ -33,3 +33,5 @@ output:
 * [Homework 11](homework11.html)
 
 * [FactoMineR Presentation](FactoMineR.html)
+
+* [FactoMineR Rmd File](FactoMineR.Rmd)
